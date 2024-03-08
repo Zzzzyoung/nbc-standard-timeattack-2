@@ -1,9 +1,15 @@
 // 1번 문제
-export type Todo = {};
+export type Todo = { id: string; title: string; content: string; isDone: boolean; createdAt: Date };
 
 export type Todos = Array<Todo>;
 
 // 2.1번 문제
+const fetchTodo = async (): Promise<Todos> => {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/todo`);
+  const data = await res.json();
+
+  return data;
+};
 
 const createTodo = async (todo: Todo): Promise<Todo> => {
   const res = await fetch(`${import.meta.env.VITE_BASE_URL}/todo`, {

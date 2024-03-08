@@ -2,23 +2,12 @@ import { Header } from './components/Header';
 import { TodoForm } from './components/TodoForm';
 import { TodoList } from './components/TodoList';
 import { Footer } from './components/Footer';
-import { Todos } from './api';
-import { useEffect, useState } from 'react';
+import { Todos, fetchTodo } from './api';
+import { useQuery } from '@tanstack/react-query';
 
 function App() {
   // 2번 문제
-  const [data, setData] = useState<Todos>();
-
-  useEffect(() => {
-    const fetchTodo = async (): Promise<Todos> => {
-      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/todo`);
-      const data = await res.json();
-
-      return data;
-    };
-
-    fetchTodo().then((todos) => setData(todos));
-  }, []);
+  const { data, isPending, error } = useQuery({ queryKey: ['todos'], queryFn: fetchTodo });
 
   const doingList: Todos = [];
   const doneList: Todos = [];
@@ -28,6 +17,9 @@ function App() {
   data?.forEach((todoItem) =>
     todoItem.isDone ? doneList.push(todoItem) : doingList.push(todoItem),
   );
+
+  if (isPending) return <p>로딩 중..!</p>;
+  if (error) return <p>오류 발생..!</p>;
 
   return (
     <>

@@ -29,13 +29,10 @@ export function TodoItem({ todo }: { todo: Todo }) {
         <div className="">{date}</div>
         {/* 3번 문제 */}
         <div className="flex justify-end gap-2">
-          <button
-            className="btn btn-primary btn-outline"
-            onClick={() => console.log('취소 또는 완료')}
-          >
+          <button className="btn btn-outline btn-primary" onClick={() => toggle.mutate(todo)}>
             {isDone ? '취소' : '완료'}
           </button>
-          <button className="btn btn-outline" onClick={() => console.log('삭제')}>
+          <button className="btn btn-outline" onClick={() => remove.mutate(todo)}>
             삭제
           </button>
         </div>
